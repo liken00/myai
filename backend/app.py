@@ -57,6 +57,21 @@ def validate_api_key():
     return True, None, None
 
 
+# Style preset: maps UI style name → English suffix appended to prompt
+STYLE_PRESETS = {
+    "写实照片": ", photorealistic, ultra detailed, professional photography, 4K",
+    "数字艺术": ", digital art, highly detailed, vibrant colors, 4K",
+    "油画": ", oil painting style, masterpiece, detailed brushwork",
+    "动漫": ", anime style, vibrant, high quality illustration",
+}
+
+def apply_style(prompt: str, style: str) -> str:
+    """Append style suffix to prompt if a style preset is selected."""
+    if style and style in STYLE_PRESETS:
+        return f"{prompt}{STYLE_PRESETS[style]}"
+    return prompt
+
+
 def build_submit_payload(model: str, prompt: str, **kwargs):
     """
     Build the PoYo.ai submit payload for the given model.
@@ -112,7 +127,10 @@ def generate_submit():
 
     data = request.get_json(silent=True) or {}
     model = data.get("model", "").strip()
-    prompt = data.get("prompt", "").strip()
+    prompt = apply_style(
+        data.get("prompt", "").strip(),
+        data.get("style", ""),
+    )
 
     if not model:
         return jsonify({"success": False, "error": "Field 'model' is required."}), 400
@@ -121,9 +139,10 @@ def generate_submit():
 
     # Whitelist supported models
     SUPPORTED_MODELS = {
-        "nano-banana-2",
+        "nano-banana",
+        "nano-banana-2-new",
         "nano-banana-pro",
-        "seedream-5.0",
+        "seedream-4.5",
         "flux-kontext-pro",
         "qwen-image",
     }

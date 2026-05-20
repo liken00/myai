@@ -53,11 +53,12 @@
 
 | Model ID | Display Name | Description |
 |----------|-------------|-------------|
-| `nano-banana-2` | Nano Banana 2 | Fast, high-quality text-to-image (Gemini 3.1 Flash) |
-| `nano-banana-pro` | Nano Banana Pro | Studio-quality, slower (Gemini 3 Pro) |
-| `seedream-5.0` | Seedream 5.0 | ByteDance Seedream 5, text-to-image + editing |
-| `flux-kontext-pro` | Flux Kontext | Black Forest Labs, text-to-image + editing |
-| `qwen-image` | Qwen Image | Alibaba Qwen VL-based image generation |
+| `nano-banana` | Nano Banana | Fast, Gemini 2.5 Flash (default) |
+| `nano-banana-2-new` | Nano Banana 2 | Gemini 3.1 Flash, 2K/4K native |
+| `nano-banana-pro` | Nano Banana Pro | Higher quality, slower |
+| `seedream-4.5` | Seedream 4.5 | ByteDance, 4K output, editing |
+| `flux-kontext-pro` | Flux Kontext | Black Forest Labs, text+edit |
+| `qwen-image` | Qwen Image | Alibaba, VL-based |
 
 ### Submit Payload Structure (per model)
 

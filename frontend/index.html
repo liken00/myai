@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>MY.AI — Free Unlimited AI Image Generator</title>
-  <meta name="description" content="Generate stunning AI images for free with Nano Banana 2, Seedream 5.0, Flux Kontext, and more. No sign-up required." />
+  <title>MY.AI - 免费无限制 AI 图像生成器</title>
+  <meta name="description" content="免费使用 Nano Banana、Seedream 4.5、Flux Kontext 等顶级 AI 模型生成图像。无需注册，无限使用。" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
@@ -471,7 +471,7 @@
 <header>
   <div>
     <span class="logo">MY.AI</span>
-    <span class="logo-sub">Free AI Image Generator</span>
+    <span class="logo-sub">免费 AI 图像生成器</span>
   </div>
   <div class="header-links">
     <a href="https://github.com" target="_blank" rel="noopener">GitHub</a>
@@ -481,16 +481,16 @@
 <!-- Main -->
 <main>
   <div class="hero">
-    <h1>Create anything with AI</h1>
-    <p>Free, unlimited, no sign-up required.</p>
+    <h1>用 AI 创造任何图像</h1>
+    <p>完全免费，无限使用，无需注册。</p>
   </div>
 
   <!-- Model Selector -->
-  <div class="section-label">Choose a model</div>
+  <div class="section-label">选择模型</div>
   <div class="model-selector" id="modelSelector">
-    <button class="model-btn active" data-model="nano-banana-2">Nano Banana 2</button>
+    <button class="model-btn active" data-model="nano-banana">Nano Banana</button>
     <button class="model-btn" data-model="nano-banana-pro">Nano Banana Pro</button>
-    <button class="model-btn" data-model="seedream-5.0">Seedream 5.0</button>
+    <button class="model-btn" data-model="seedream-4.5">Seedream 4.5</button>
     <button class="model-btn" data-model="flux-kontext-pro">Flux Kontext</button>
     <button class="model-btn" data-model="qwen-image">Qwen Image</button>
   </div>
@@ -499,30 +499,30 @@
   <div class="card">
     <div class="prompt-wrap">
       <div class="prompt-label">
-        <span class="section-label">Prompt</span>
+        <span class="section-label">提示词</span>
       </div>
       <textarea
         id="promptInput"
-        placeholder="Describe the image you want to create… e.g. A cyberpunk city at night with neon lights and flying cars"
+        placeholder="描述你想要生成的图像… 例如：霓虹灯闪烁的赛博朋克城市夜景，飞车穿梭于高楼之间"
         maxlength="4000"
       ></textarea>
     </div>
 
     <div class="options-row">
       <div class="field-group">
-        <label class="field-label" for="aspectRatio">Aspect Ratio</label>
+        <label class="field-label" for="aspectRatio">宽高比</label>
         <select id="aspectRatio">
-          <option value="1:1">1:1 (Square)</option>
-          <option value="16:9">16:9 (Landscape)</option>
-          <option value="9:16" selected>9:16 (Portrait)</option>
+          <option value="1:1" selected>1:1 (方形)</option>
+          <option value="16:9">16:9 (横版)</option>
+          <option value="9:16">9:16 (竖版)</option>
           <option value="4:3">4:3</option>
           <option value="3:4">3:4</option>
         </select>
       </div>
       <div class="field-group">
-        <label class="field-label" for="resolution">Resolution</label>
+        <label class="field-label" for="resolution">分辨率</label>
         <select id="resolution">
-          <option value="auto">Auto</option>
+          <option value="auto">自动</option>
           <option value="512">512px</option>
           <option value="768">768px</option>
           <option value="1024" selected>1024px</option>
@@ -532,11 +532,13 @@
         </select>
       </div>
       <div class="field-group">
-        <label class="field-label" for="outputFormat">Format</label>
-        <select id="outputFormat">
-          <option value="png" selected>PNG</option>
-          <option value="jpg">JPG</option>
-          <option value="webp">WebP</option>
+        <label class="field-label" for="styleSelect">风格</label>
+        <select id="styleSelect">
+          <option value="">无</option>
+          <option value="写实照片">写实照片</option>
+          <option value="数字艺术">数字艺术</option>
+          <option value="油画">油画</option>
+          <option value="动漫">动漫</option>
         </select>
       </div>
     </div>
@@ -545,7 +547,7 @@
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
         <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
       </svg>
-      Generate Image
+      生成图像
     </button>
 
     <div class="error-banner" id="errorBanner">
@@ -562,7 +564,7 @@
       <img id="outputImage" src="" alt="Generated image" />
       <div class="loading-overlay" id="loadingOverlay">
         <div class="spinner"></div>
-        <div class="loading-text">Generating<span class="loading-dots"></span></div>
+        <div class="loading-text">生成中<span class="loading-dots"></span></div>
       </div>
     </div>
     <div class="output-actions">
@@ -570,35 +572,35 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
         </svg>
-        Download
+        下载
       </button>
       <button class="output-btn" id="shareBtn" disabled>
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>
           <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
         </svg>
-        Share
+        分享
       </button>
     </div>
   </div>
 
   <!-- Tips -->
   <div class="tips">
-    <div class="tips-title">Prompt Tips</div>
+    <div class="tips-title">提示词技巧</div>
     <ul class="tips-list">
-      <li>Be specific about subjects, setting, and mood</li>
-      <li>Mention art styles: "digital art", "oil painting"</li>
-      <li>Include lighting: "golden hour", "neon glow"</li>
-      <li>Add camera angles: "wide shot", "close-up"</li>
-      <li>Describe quality: "highly detailed", "4K"</li>
-      <li>For portraits: "detailed face", "cinematic"</li>
+      <li>具体描述主体、场景和氛围</li>
+      <li>提及艺术风格："数字艺术"、"油画"</li>
+      <li>加入光照描述："金色时刻"、"霓虹光效"</li>
+      <li>添加镜头角度："广角"、"特写"</li>
+      <li>描述质量："高度详细"、"4K"</li>
+      <li>人物肖像："精致面容"、"电影感"</li>
     </ul>
   </div>
 </main>
 
 <!-- Footer -->
 <footer>
-  MY.AI — Free unlimited AI image generation powered by PoYo.ai.
+  MY.AI — 免费无限制 AI 图像生成器，由 PoYo.ai 提供支持。
   <br />
   <a href="https://poyo.ai" target="_blank" rel="noopener">PoYo.ai API</a>
 </footer>
@@ -617,7 +619,7 @@
   const API_BASE = 'https://myai-backend.onrender.com';
 
   // ----- State -----
-  let selectedModel = 'nano-banana-2';
+  let selectedModel = 'nano-banana';
   let currentTaskId = null;
   let pollTimer = null;
   let pollCount = 0;
@@ -629,7 +631,7 @@
   const promptInput   = document.getElementById('promptInput');
   const aspectSelect  = document.getElementById('aspectRatio');
   const resSelect     = document.getElementById('resolution');
-  const fmtSelect     = document.getElementById('outputFormat');
+  const fmtSelect     = document.getElementById('styleSelect');
   const generateBtn   = document.getElementById('generateBtn');
   const errorBanner   = document.getElementById('errorBanner');
   const errorText     = document.getElementById('errorText');
@@ -655,7 +657,7 @@
   async function generateImage() {
     const prompt = promptInput.value.trim();
     if (!prompt) {
-      showError('Please enter a prompt first.');
+      showError('请先输入提示词。');
       promptInput.focus();
       return;
     }
@@ -681,14 +683,14 @@
           prompt: prompt,
           aspect_ratio: aspectSelect.value,
           resolution: resSelect.value,
-          output_format: fmtSelect.value,
+          style: fmtSelect.value,
         }),
       });
 
       const data = await res.json();
 
       if (!res.ok || !data.success) {
-        throw new Error(data.error || data.message || 'Failed to submit task.');
+        throw new Error(data.error || data.message || '提交任务失败。');
       }
 
       currentTaskId = data.task_id;
@@ -699,7 +701,7 @@
 
     } catch (err) {
       hideLoading();
-      showError(err.message || 'Something went wrong. Please try again.');
+      showError(err.message || '出错了，请重试。');
       isGenerating = false;
       setGenerateButtonLoading(false);
     }
@@ -715,7 +717,7 @@
       if (pollCount > 90) {
         clearInterval(pollTimer);
         hideLoading();
-        showError('Generation timed out. Please try again.');
+        showError('生成超时，请重试。');
         isGenerating = false;
         setGenerateButtonLoading(false);
         return;
@@ -733,7 +735,7 @@
         } else if (data.status === 'failed') {
           clearInterval(pollTimer);
           hideLoading();
-          showError(data.error || 'Generation failed.');
+          showError(data.error || '生成失败。');
           isGenerating = false;
           setGenerateButtonLoading(false);
         }
@@ -752,7 +754,7 @@
     setGenerateButtonLoading(false);
 
     if (!images || images.length === 0) {
-      showError('No images returned. Please try again.');
+      showError('未返回图像，请重试。');
       return;
     }
 
@@ -761,7 +763,7 @@
     currentImageUrl = img.url || (img.b64_json ? `data:image/png;base64,${img.b64_json}` : null);
 
     if (!currentImageUrl) {
-      showError('Could not parse image response. Please try again.');
+      showError('无法解析图像响应，请重试。');
       return;
     }
 
@@ -781,7 +783,7 @@
       a.href = currentImageUrl;
       a.download = `myai-${Date.now()}.png`;
       a.click();
-      showToast('Image downloaded!');
+      showToast('图像已下载！');
     } else {
       // URL — fetch blob then download
       try {
@@ -793,11 +795,11 @@
         a.download = `myai-${Date.now()}.png`;
         a.click();
         URL.revokeObjectURL(url);
-        showToast('Image downloaded!');
+        showToast('图像已下载！');
       } catch {
         // Fallback: open in new tab
         window.open(currentImageUrl, '_blank');
-        showToast('Opened in new tab — right-click to save.');
+        showToast('已在新标签页打开，右键另存为。');
       }
     }
   });
@@ -815,7 +817,7 @@
 
     try {
       await navigator.clipboard.writeText(url);
-      showToast('Link copied to clipboard!');
+      showToast('链接已复制到剪贴板！');
     } catch {
       showToast('Could not copy — please copy the URL manually.');
     }
@@ -845,10 +847,10 @@
   function setGenerateButtonLoading(loading) {
     generateBtn.disabled = loading;
     generateBtn.innerHTML = loading
-      ? `<div class="spinner" style="width:18px;height:18px;border-width:2px;"></div> Generating…`
+      ? `<div class="spinner" style="width:18px;height:18px;border-width:2px;"></div> 生成中…`
       : `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
-         </svg> Generate Image`;
+         </svg> 生成图像`;
   }
 
   let toastTimer = null;
