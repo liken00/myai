@@ -79,14 +79,14 @@ def build_submit_payload(model: str, prompt: str, **kwargs):
     """
     payload = {
         "model": model,
-        "prompt": prompt,
+        "input": {"prompt": prompt},
     }
 
-    # Common optional fields
+    # Common optional fields go inside input
     for field in ["aspect_ratio", "resolution", "num_images", "output_format",
                   "enable_web_search", "seed", "strength", "size"]:
         if field in kwargs and kwargs[field] is not None:
-            payload[field] = kwargs[field]
+            payload["input"][field] = kwargs[field]
 
     return payload
 
