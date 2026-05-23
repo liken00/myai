@@ -1,35 +1,28 @@
-import { NextRequest, NextResponse } from "next/server";
-import jwt from "jsonwebtoken";
-
-const JWT_SECRET = process.env.JWT_SECRET || "myai-secret-key-change-in-production";
-const PROTECTED_ROUTES = ["/dashboard", "/generate"];
+import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
 
 export function middleware(request: NextRequest) {
-  const { pathname } = request.nextUrl;
+  const token = request.cookies.get("auth_token")?.value;
 
-  // Check if route needs protection
-  const needsAuth = PROTECTED_ROUTES.some((route) => pathname.startsWith(route));
-  if (!needsAuth) {
-    return NextResponse.next();
+  // Public paths that don't need auth
+  const publicPaths = ["/", "/login", "/register", "/api/auth", "/api/generate", "/api/webhook"];
+  const pathname = request.nextUrl.pathname;
+
+  // Allow public paths
+  for (const path of publicPaths) {
+    if (pathname === path || pathname.startsWith(path + "/")) {
+      return NextResponse.next();
+    }
   }
 
-  // Check for auth_token cookie
-  const token = request.cookies.get("auth_token")?.value;
+  // Check auth token
   if (!token) {
     return NextResponse.redirect(new URL("/login", request.url));
   }
 
-  try {
-    jwt.verify(token, JWT_SECRET);
-    return NextResponse.next();
-  } catch {
-    // Invalid token - redirect to login
-    const response = NextResponse.redirect(new URL("/login", request.url));
-    response.cookies.delete("auth_token");
-    return response;
-  }
+  return NextResponse.next();
 }
 
 export const config = {
-  matcher: ["/dashboard/:path*", "/generate/:path*"],
+  matcher: ["/dashboard/:path*", "/generate/:path*", "/pricing/:path*"],
 };
