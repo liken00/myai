@@ -1,5 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
-import { v4 as uuidv4 } from "uuid";
+import jwt from "jsonwebtoken";
+import { getUserCredits, deductCredit } from "@/lib/auth";
+import { generateWithFallback } from "@/lib/ai-service";
+import { saveGeneration } from "@/lib/generations";
 
 export async function POST(req: NextRequest) {
   try {
@@ -9,58 +12,67 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Prompt is required" }, { status: 400 });
     }
 
-    const apiKey = process.env.LEPTON_API_KEY;
-    if (!apiKey) {
-      return NextResponse.json(
-        { error: "Image generation service not configured. Please add your Lepton API key." },
-        { status: 503 }
-      );
+    // Extract auth token from cookie
+    const authToken = req.cookies.get("auth_token")?.value;
+
+    if (!authToken) {
+      return NextResponse.json({ error: "Authentication required" }, { status: 401 });
     }
 
-    // Lepton AI image generation API
-    const response = await fetch("https://api.lepton.ai/v1/images/generate", {
-      method: "POST",
-      headers: {
-        "Authorization": `Bearer ${apiKey}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        model: "FLUX",
-        prompt,
-        width: width || 1024,
-        height: height || 1024,
-        steps: 30,
-        seed: Math.floor(Math.random() * 999999),
-      }),
+    // Verify JWT and get email
+    let email: string;
+    try {
+      const JWT_SECRET = process.env.JWT_SECRET || "myai-secret-key-change-in-production";
+      const decoded = jwt.verify(authToken, JWT_SECRET) as { email: string };
+      email = decoded.email;
+    } catch {
+      return NextResponse.json({ error: "Invalid authentication token" }, { status: 401 });
+    }
+
+    // Check user credits
+    const credits = await getUserCredits(email);
+    if (credits < 1) {
+      return NextResponse.json({ error: "Insufficient credits" }, { status: 402 });
+    }
+
+    // Generate image with fallback (Lepton -> Replicate)
+    const { result } = await generateWithFallback(prompt, width || 1024, height || 1024);
+
+    // Save generation
+    await saveGeneration(email, { url: result.url, prompt });
+
+    // Deduct credit
+    await deductCredit(email);
+
+    return NextResponse.json({
+      url: result.url,
+      id: result.id,
+      remainingCredits: credits - 1,
     });
-
-    if (!response.ok) {
-      const err = await response.text();
-      console.error("Lepton API error:", err);
-      return NextResponse.json(
-        { error: "Image generation failed. Please try again." },
-        { status: 500 }
-      );
-    }
-
-    const data = await response.json();
-    
-    // Lepton returns { data: [{ url: "..." }] }
-    const imageUrl = data?.data?.[0]?.url;
-    
-    if (!imageUrl) {
-      return NextResponse.json(
-        { error: "No image returned. Please try again." },
-        { status: 500 }
-      );
-    }
-
-    return NextResponse.json({ url: imageUrl, id: uuidv4() });
   } catch (err) {
     console.error("Generate error:", err);
     return NextResponse.json(
       { error: "Internal server error" },
       { status: 500 }
     );
+  }
+}
+
+export async function GET(req: NextRequest) {
+  const authToken = req.cookies.get("auth_token")?.value;
+
+  if (!authToken) {
+    return NextResponse.json({ error: "Authentication required" }, { status: 401 });
+  }
+
+  try {
+    const JWT_SECRET = process.env.JWT_SECRET || "myai-secret-key-change-in-production";
+    const decoded = jwt.verify(authToken, JWT_SECRET) as { email: string };
+
+    const credits = await getUserCredits(decoded.email);
+
+    return NextResponse.json({ credits });
+  } catch {
+    return NextResponse.json({ error: "Invalid token" }, { status: 401 });
   }
 }
