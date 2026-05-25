@@ -1,6 +1,6 @@
 # My AI - AI Image Generation Website
 
-An AI image generation website similar to raphael.app, built with Next.js 15 + TypeScript.
+An AI image generation website similar to myai.dev, built with Next.js 15 + TypeScript.
 
 ## Features
 
